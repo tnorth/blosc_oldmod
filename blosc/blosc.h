@@ -48,7 +48,7 @@
 #define BLOSC_DOSHUFFLE 0x1
 #define BLOSC_MEMCPYED  0x2
 
-
+struct config;
 
 /**
   Compress a block of data in the `src` buffer and returns the size of
@@ -114,7 +114,7 @@ int blosc_decompress(const void *src, void *dest, size_t destsize);
   `dest` or a negative value if some error happens.
  */
 
-int blosc_getitem(const void *src, int start, int nitems, void *dest);
+int blosc_getitem(const void *src, int start, int nitems, void *dest, struct config *);
 
 
 /**
@@ -124,7 +124,7 @@ int blosc_getitem(const void *src, int start, int nitems, void *dest);
   threads.  If this is not called, `nthreads` is set to 1 internally.
 */
 
-int blosc_set_nthreads(int nthreads);
+int blosc_set_nthreads(int nthreads, struct config *);
 
 
 /**
@@ -132,7 +132,7 @@ int blosc_set_nthreads(int nthreads);
   when you are not going to use Blosc for a long while.
 */
 
-void blosc_free_resources(void);
+void blosc_free_resources(struct config *);
 
 
 /**
@@ -193,8 +193,8 @@ void blosc_cbuffer_versions(const void *cbuffer, int *version,
   Force the use of a specific blocksize.  If 0, an automatic
   blocksize will be used (the default).
 */
-
-void blosc_set_blocksize(size_t blocksize);
+/* Remove for now */
+// void blosc_set_blocksize(size_t blocksize);
 
 
 #endif
