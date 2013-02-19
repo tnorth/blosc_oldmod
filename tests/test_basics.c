@@ -77,7 +77,7 @@ int main(int argc, char **argv) {
 
   printf("STARTING TESTS for %s", argv[0]);
 
-  blosc_set_nthreads(1);
+//   blosc_set_nthreads(1);
 
   /* Initialize buffers */
   src = malloc(size);
