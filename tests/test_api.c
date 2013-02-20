@@ -20,7 +20,7 @@ int clevel = 3;
 int doshuffle = 1;
 size_t typesize = 4;
 size_t size = 1*MB;
-
+int nthreads = 1;
 
 
 static char *test_cbuffer_sizes() {
@@ -78,10 +78,10 @@ int main(int argc, char **argv) {
   memcpy(srccpy, src, size);
 
   /* Get a compressed buffer */
-  cbytes = blosc_compress(clevel, doshuffle, typesize, size, src, dest, size);
+  cbytes = blosc_compress(clevel, doshuffle, typesize, size, src, dest, size, nthreads);
 
   /* Get a decompressed buffer */
-  nbytes = blosc_decompress(dest, dest2, size);
+  nbytes = blosc_decompress(dest, dest2, size, nthreads);
 
   /* Run all the suite */
   char *result = all_tests();

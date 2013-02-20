@@ -151,7 +151,7 @@ void do_bench(int nthreads, int size, int elsize, int rshift) {
   int clevel, doshuffle=1;
   unsigned char *orig, *round;
 
-  blosc_set_nthreads(nthreads);
+//   blosc_set_nthreads(nthreads);
 
   /* Initialize buffers */
   src = malloc(size);
@@ -209,7 +209,7 @@ void do_bench(int nthreads, int size, int elsize, int rshift) {
     for (i = 0; i < niter; i++) {
       for (j = 0; j < nchunks; j++) {
         cbytes = blosc_compress(clevel, doshuffle, elsize, size, src,
-                                dest[j], size+BLOSC_MAX_OVERHEAD);
+                                dest[j], size+BLOSC_MAX_OVERHEAD, nthreads);
       }
     }
     gettimeofday(&current, NULL);
@@ -237,7 +237,7 @@ void do_bench(int nthreads, int size, int elsize, int rshift) {
           nbytes = size;
         }
         else {
-          nbytes = blosc_decompress(dest[j], dest2, size);
+          nbytes = blosc_decompress(dest[j], dest2, size, nthreads);
         }
       }
     }
@@ -296,7 +296,7 @@ int main(int argc, char *argv[]) {
   int hard_suite = 0;
   int extreme_suite = 0;
   int debug_suite = 0;
-  int nthreads = 1;                     /* The number of threads */
+  int nthreads = 4;                     /* The number of threads */
   int size = 2*MB;                      /* Buffer size */
   int elsize = 8;                       /* Datatype size */
   int rshift = 19;                      /* Significant bits */
@@ -453,7 +453,7 @@ int main(int argc, char *argv[]) {
          totaltime, totalsize*2*1.1/(MB*totaltime));
 
   /* Free blosc resources */
-  blosc_free_resources();
+//   blosc_free_resources();
 
   return 0;
 }

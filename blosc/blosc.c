@@ -642,12 +642,13 @@ int32_t compute_blocksize(int32_t clevel, uint32_t typesize, int32_t nbytes, str
 
 /* The public routine for compression.  See blosc.h for docstrings. */
 int blosc_compress(int clevel, int doshuffle, size_t typesize, size_t nbytes,
-      const void *src, void *dest, size_t destsize)
+      const void *src, void *dest, size_t destsize, int nthreads)
 {
     
   /* Old globals */
   struct config comp_config; 
   init_conf(&comp_config);
+  comp_config.nthreads = nthreads;
    
 
   uint8_t *_dest=NULL;         /* current pos for destination buffer */
@@ -794,7 +795,7 @@ int blosc_compress(int clevel, int doshuffle, size_t typesize, size_t nbytes,
 
 
 /* The public routine for decompression.  See blosc.h for docstrings. */
-int blosc_decompress(const void *src, void *dest, size_t destsize)
+int blosc_decompress(const void *src, void *dest, size_t destsize, int nthreads)
 {
   uint8_t *_src=NULL;            /* current pos for source buffer */
   uint8_t *_dest=NULL;           /* current pos for destination buffer */
@@ -813,6 +814,7 @@ int blosc_decompress(const void *src, void *dest, size_t destsize)
   /* Old globals */
   struct config comp_config; 
   init_conf(&comp_config);
+  comp_config.nthreads = nthreads;
     
   /* Read the header block */
   version = _src[0];                         /* blosc format version */
@@ -880,6 +882,7 @@ int blosc_decompress(const void *src, void *dest, size_t destsize)
  
   return ntbytes;
 }
+
 
 
 /* Specific routine optimized for decompression a small number of

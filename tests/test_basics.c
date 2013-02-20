@@ -21,13 +21,14 @@ int doshuffle = 0;
 size_t typesize = 4;
 size_t size = 1000;             /* must be divisible by 4 */
 
+int nthreads = 1;
 
 /* Check maxout with maxout < size */
 static char *test_maxout_less() {
 
   /* Get a compressed buffer */
   cbytes = blosc_compress(clevel, doshuffle, typesize, size, src,
-                          dest, size+15);
+                          dest, size+15, nthreads);
   mu_assert("ERROR: cbytes is not 0", cbytes == 0);
 
   return 0;
@@ -38,11 +39,11 @@ static char *test_maxout_equal() {
 
   /* Get a compressed buffer */
   cbytes = blosc_compress(clevel, doshuffle, typesize, size, src,
-                          dest, size+16);
+                          dest, size+16, nthreads);
   mu_assert("ERROR: cbytes is not correct", cbytes == size+16);
 
   /* Decompress the buffer */
-  nbytes = blosc_decompress(dest, dest2, size);
+  nbytes = blosc_decompress(dest, dest2, size, nthreads);
   mu_assert("ERROR: nbytes incorrect(1)", nbytes == size);
 
   return 0;
@@ -53,11 +54,11 @@ static char *test_maxout_equal() {
 static char *test_maxout_great() {
   /* Get a compressed buffer */
   cbytes = blosc_compress(clevel, doshuffle, typesize, size, src,
-                          dest, size+17);
+                          dest, size+17, nthreads);
   mu_assert("ERROR: cbytes is not 0", cbytes == size+16);
 
   /* Decompress the buffer */
-  nbytes = blosc_decompress(dest, dest2, size);
+  nbytes = blosc_decompress(dest, dest2, size, nthreads);
   mu_assert("ERROR: nbytes incorrect(1)", nbytes == size);
 
   return 0;
